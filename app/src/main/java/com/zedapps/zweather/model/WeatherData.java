@@ -31,21 +31,21 @@ public class WeatherData {
     private Date sunriseTime;
     private Date sunsetTime;
 
-    public WeatherData(JSONObject resposeJSon) throws JSONException {
-        JSONObject weatherSection = resposeJSon.getJSONArray("weather").getJSONObject(0);
+    public WeatherData(JSONObject responseJSon) throws JSONException {
+        JSONObject weatherSection = responseJSon.getJSONArray("weather").getJSONObject(0);
         this.weatherCategory = weatherSection.getString("main");
         this.weatherDescription = weatherSection.getString("description");
         this.weatherCode = weatherSection.getString("icon");
 
-        JSONObject tempSection = resposeJSon.getJSONObject("main");
+        JSONObject tempSection = responseJSon.getJSONObject("main");
         this.currentTemperature = tempSection.getString("temp") + "°C";
         this.pressure = tempSection.getString("pressure") + "hPa";
         this.humidity = tempSection.getString("humidity") + "%";
         this.minTemperature = tempSection.getString("temp_min") + "°C";
         this.maxTemperature = tempSection.getString("temp_max") + "°C";
 
-        if (resposeJSon.has("wind")) {
-            JSONObject windSection = resposeJSon.getJSONObject("wind");
+        if (responseJSon.has("wind")) {
+            JSONObject windSection = responseJSon.getJSONObject("wind");
 
             if (windSection.has("speed")) {
                 this.windSpeed = windSection.getString("speed") + "m/s";
@@ -56,10 +56,10 @@ public class WeatherData {
             }
         }
 
-        long updateTimeStampMillis = parseUnixEpochToMilis(resposeJSon.getString("dt"));
+        long updateTimeStampMillis = parseUnixEpochToMilis(responseJSon.getString("dt"));
         this.lastUpdatedTime = new Date(updateTimeStampMillis);
 
-        JSONObject sysSection = resposeJSon.getJSONObject("sys");
+        JSONObject sysSection = responseJSon.getJSONObject("sys");
         long sunriseMilis = parseUnixEpochToMilis(sysSection.getString("sunrise"));
         long sunsetMilis = parseUnixEpochToMilis(sysSection.getString("sunset"));
 

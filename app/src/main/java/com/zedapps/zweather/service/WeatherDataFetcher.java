@@ -5,13 +5,11 @@ import android.os.AsyncTask;
 
 import com.zedapps.zweather.R;
 import com.zedapps.zweather.model.WeatherData;
+import com.zedapps.zweather.util.NetworkUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
@@ -20,7 +18,7 @@ import java.net.URL;
  */
 public class WeatherDataFetcher extends AsyncTask<Object, JSONObject, WeatherData> {
 
-    private static final String REQUEST_URL = "http://api.openweathermap.org/data" +
+    private static final String WEATHER_REQUEST_URL = "http://api.openweathermap.org/data" +
             "/2.5/weather?lat={LAT}&lon={LON}&APPID={APIKEY}&units=metric";
 
     @Override
@@ -29,29 +27,16 @@ public class WeatherDataFetcher extends AsyncTask<Object, JSONObject, WeatherDat
         String lat = (String) objects[1];
         String lon = (String) objects[2];
 
-        String apiKey = context.getResources().getString(R.string.apiKey);
+        String weatherApiKey = context.getResources().getString(R.string.weatherApiKey);
 
         try {
-            URL requestUrl = new URL(REQUEST_URL.replace("{LAT}", lat)
+            URL weatherRequestUrl = new URL(WEATHER_REQUEST_URL.replace("{LAT}", lat)
                     .replace("{LON}", lon)
-                    .replace("{APIKEY}", apiKey));
+                    .replace("{APIKEY}", weatherApiKey));
 
-            System.out.println(requestUrl.toString());
+            String response = NetworkUtils.obtainResponseString(weatherRequestUrl);
 
-            HttpURLConnection httpConnection = (HttpURLConnection) requestUrl.openConnection();
-            httpConnection.setRequestMethod("GET");
-
-            BufferedReader responseReader = new BufferedReader(new InputStreamReader
-                    (httpConnection.getInputStream()));
-
-            StringBuilder responseBuilder = new StringBuilder();
-            String buffer;
-
-            while ((buffer = responseReader.readLine()) != null) {
-                responseBuilder.append(buffer).append("\n");
-            }
-
-            return new WeatherData(new JSONObject(responseBuilder.toString()));
+            return new WeatherData(new JSONObject(response));
         } catch (java.io.IOException | JSONException e) {
             e.printStackTrace();
             return null;

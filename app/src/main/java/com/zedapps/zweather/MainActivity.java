@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -14,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zedapps.zweather.model.TimeData;
 import com.zedapps.zweather.model.WeatherData;
+import com.zedapps.zweather.service.TimeDataFetcher;
 import com.zedapps.zweather.service.WeatherDataFetcher;
 import com.zedapps.zweather.util.IconUtils;
 import com.zedapps.zweather.util.NetworkUtils;
@@ -23,8 +24,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 import static android.R.layout.simple_dropdown_item_1line;
@@ -44,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TIME_FORMAT_12H = "hh:mm a";
     public static final String TIMESTAMP_FORMAT = "dd/MM/yyyy hh:mm:ss a";
+
+    public static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT_12H);
+    public static final SimpleDateFormat timeStampFormat = new SimpleDateFormat(TIMESTAMP_FORMAT);
+
     private static List<String> countryList;
     private static List<String> coordinateList;
 
@@ -129,9 +138,15 @@ public class MainActivity extends AppCompatActivity {
                     new WeatherDataFetcher().execute(getApplicationContext(), coordinatesComps[0],
                             coordinatesComps[1]);
 
+            AsyncTask<Object, JSONObject, TimeData> timeFetcher =
+                    new TimeDataFetcher().execute(getApplicationContext(), coordinatesComps[0],
+                            coordinatesComps[1]);
+
             try {
                 WeatherData weatherData = weatherFetcher.get();
-                formatViewableWeatherData(cityCountryCombo, weatherData);
+                TimeData timeData = timeFetcher.get();
+
+                formatViewableWeatherData(cityCountryCombo, weatherData, timeData);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
@@ -140,7 +155,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void formatViewableWeatherData(String cityCountryCombo, WeatherData weatherData) {
+    private void formatViewableWeatherData(String cityCountryCombo, WeatherData weatherData,
+                                           TimeData timeData) {
+
         txtCityLabel.setText(cityCountryCombo);
         imgWeatherIcon.setBackgroundResource(getIconDrawableCode(weatherData.getWeatherCode()));
 
@@ -165,24 +182,30 @@ public class MainActivity extends AppCompatActivity {
             txtWindSpeed.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("windSpeed"),
                     null, null, null);
             txtWindSpeed.setText(weatherData.getWindSpeed());
+        } else {
+            txtWindSpeed.setText(R.string.lbl_no_wind_speed);
         }
 
         if (StringUtils.isNotEmpty(weatherData.getWindDeg())) {
             txtWindDeg.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("windDeg"),
                     null, null, null);
             txtWindDeg.setText(weatherData.getWindDeg());
+        } else {
+            txtWindDeg.setText(R.string.lbl_no_wind_deg);
         }
+
+        timeFormat.setTimeZone(TimeZone.getTimeZone(timeData.getTimeZone()));
 
         txtSunrise.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("sunrise"),
                 null, null, null);
-        txtSunrise.setText(DateFormat.format(TIME_FORMAT_12H, weatherData.getSunriseTime()));
+        txtSunrise.setText(timeFormat.format(weatherData.getSunriseTime()));
 
         txtSunset.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("sunset"),
                 null, null, null);
-        txtSunset.setText(DateFormat.format(TIME_FORMAT_12H, weatherData.getSunsetTime()));
+        txtSunset.setText(timeFormat.format(weatherData.getSunsetTime()));
 
         String lastUpdatedString = getString(R.string.lbl_last_updated) +
-                DateFormat.format(TIMESTAMP_FORMAT, weatherData.getLastUpdatedTime());
+                timeStampFormat.format(weatherData.getLastUpdatedTime());
         txtUpdatedStamp.setText(lastUpdatedString);
     }
 

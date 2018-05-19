@@ -4,6 +4,12 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.net.ConnectivityManager.TYPE_MOBILE;
 import static android.net.ConnectivityManager.TYPE_WIFI;
@@ -23,5 +29,22 @@ public class NetworkUtils {
 
         return (mobileNetInfo != null && !mobileNetInfo.isConnectedOrConnecting())
                 && (wifiNetInfo != null && !wifiNetInfo.isConnectedOrConnecting());
+    }
+
+    public static String obtainResponseString(URL requestUrl) throws IOException {
+        HttpURLConnection httpConnection = (HttpURLConnection) requestUrl.openConnection();
+        httpConnection.setRequestMethod("GET");
+
+        BufferedReader responseReader = new BufferedReader(new InputStreamReader
+                (httpConnection.getInputStream()));
+
+        StringBuilder responseBuilder = new StringBuilder();
+        String buffer;
+
+        while ((buffer = responseReader.readLine()) != null) {
+            responseBuilder.append(buffer).append("\n");
+        }
+
+        return responseBuilder.toString();
     }
 }
