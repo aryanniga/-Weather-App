@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         txtCurrentTemperature.setText(weatherData.getCurrentTemperature());
         txtWeatherDesc.setText(WordUtils.capitalize(weatherData.getWeatherDescription()));
 
-        txtMinTemperature.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("mintemp"),
+        txtMinTemperature.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("minTemp"),
                 null, null, null);
         txtMinTemperature.setText(weatherData.getMinTemperature());
 
@@ -162,13 +162,13 @@ public class MainActivity extends AppCompatActivity {
         txtHumidity.setText(weatherData.getHumidity());
 
         if (StringUtils.isNotEmpty(weatherData.getWindSpeed())) {
-            txtWindSpeed.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("windspeed"),
+            txtWindSpeed.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("windSpeed"),
                     null, null, null);
             txtWindSpeed.setText(weatherData.getWindSpeed());
         }
 
         if (StringUtils.isNotEmpty(weatherData.getWindDeg())) {
-            txtWindDeg.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("winddeg"),
+            txtWindDeg.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("windDeg"),
                     null, null, null);
             txtWindDeg.setText(weatherData.getWindDeg());
         }
