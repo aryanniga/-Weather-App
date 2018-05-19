@@ -1,6 +1,13 @@
 package com.zedapps.zweather.util;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+
 import com.zedapps.zweather.R;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author smzoha
@@ -80,5 +87,29 @@ public class IconUtils {
         }
 
         return -1;
+    }
+
+    public static Map<String, Drawable> getDrawableMap(Context context) {
+        Map<String, Drawable> drawableMap = new LinkedHashMap<>();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawableMap.put("minTemp", context.getDrawable(R.drawable.mintemp));
+            drawableMap.put("maxTemp", context.getDrawable(R.drawable.maxtemp));
+            drawableMap.put("humidity", context.getDrawable(R.drawable.humidity));
+            drawableMap.put("windSpeed", context.getDrawable(R.drawable.windspeed));
+            drawableMap.put("windDeg", context.getDrawable(R.drawable.winddeg));
+            drawableMap.put("sunrise", context.getDrawable(R.drawable.sunrise));
+            drawableMap.put("sunset", context.getDrawable(R.drawable.sunset));
+        } else {
+            drawableMap.put("minTemp", context.getResources().getDrawable(R.drawable.mintemp));
+            drawableMap.put("maxTemp", context.getResources().getDrawable(R.drawable.maxtemp));
+            drawableMap.put("humidity", context.getResources().getDrawable(R.drawable.humidity));
+            drawableMap.put("windSpeed", context.getResources().getDrawable(R.drawable.windspeed));
+            drawableMap.put("windDeg", context.getResources().getDrawable(R.drawable.winddeg));
+            drawableMap.put("sunrise", context.getResources().getDrawable(R.drawable.sunrise));
+            drawableMap.put("sunset", context.getResources().getDrawable(R.drawable.sunset));
+        }
+
+        return drawableMap;
     }
 }

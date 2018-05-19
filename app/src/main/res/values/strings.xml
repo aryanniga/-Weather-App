@@ -8,4 +8,5 @@
 
     <string name="lbl.about">Powered by ZedApps. Icons created by Laura Reen @ IconFinder.com</string>
     <string name="img.weather.hint">Weather icon goes here</string>
+    <string name="lbl_last_updated">Last Update Time:</string>
 </resources>

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Data obtained from SimpleMaps, licensed under MIT License -->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Data obtained from SimpleMaps, licensed under MIT License -->
 <resources>
     <array name="country">
         <item>Qal eh-ye Now, Afghanistan</item>
@@ -7070,7 +7071,7 @@
         <item>Atlanta, United States of America</item>
         <item>Chicago, United States of America</item>
         <item>Los Angeles, United States of America</item>
-        <item>"Washington, -77.00941858</item>
+        <item>"Washington, D.C., United States of America</item>
         <item>New York, United States of America</item>
         <item>Christiansted, United States Virgin Islands</item>
         <item>Colonia del Sacramento, Uruguay</item>

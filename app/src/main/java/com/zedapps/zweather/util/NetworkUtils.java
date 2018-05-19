@@ -14,14 +14,14 @@ import static android.net.ConnectivityManager.TYPE_WIFI;
  */
 public class NetworkUtils {
 
-    public static boolean isConnectedToInternet(Context appContext) {
+    public static boolean isNetworkNotConnected(Context appContext) {
         ConnectivityManager connManager = (ConnectivityManager)
                 appContext.getSystemService(CONNECTIVITY_SERVICE);
 
         NetworkInfo mobileNetInfo = connManager.getNetworkInfo(TYPE_MOBILE);
         NetworkInfo wifiNetInfo = connManager.getNetworkInfo(TYPE_WIFI);
 
-        return (mobileNetInfo == null || mobileNetInfo.isConnectedOrConnecting())
-                || (wifiNetInfo == null || wifiNetInfo.isConnectedOrConnecting());
+        return (mobileNetInfo != null && !mobileNetInfo.isConnectedOrConnecting())
+                && (wifiNetInfo != null && !wifiNetInfo.isConnectedOrConnecting());
     }
 }

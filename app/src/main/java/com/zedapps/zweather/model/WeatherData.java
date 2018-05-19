@@ -44,9 +44,17 @@ public class WeatherData {
         this.minTemperature = tempSection.getString("temp_min") + "°C";
         this.maxTemperature = tempSection.getString("temp_max") + "°C";
 
-        JSONObject windSection = resposeJSon.getJSONObject("wind");
-        this.windSpeed = windSection.getString("speed") + "m/s";
-        this.windDeg = windSection.getString("deg") + "°";
+        if (resposeJSon.has("wind")) {
+            JSONObject windSection = resposeJSon.getJSONObject("wind");
+
+            if (windSection.has("speed")) {
+                this.windSpeed = windSection.getString("speed") + "m/s";
+            }
+
+            if (windSection.has("deg")) {
+                this.windDeg = windSection.getString("deg") + "°";
+            }
+        }
 
         long updateTimeStampMillis = parseUnixEpochToMilis(resposeJSon.getString("dt"));
         this.lastUpdatedTime = new Date(updateTimeStampMillis);

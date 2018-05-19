@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Data obtained from SimpleMaps, licensed under MIT License -->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Data obtained from SimpleMaps, licensed under MIT License -->
 <resources>
     <array name="coordinates">
         <item>34.98300013,63.13329964</item>
@@ -7070,7 +7071,7 @@
         <item>33.83001385,-84.39994938</item>
         <item>41.82999066,-87.75005497</item>
         <item>33.98997825,-118.1799805</item>
-        <item>"Washington, D.C."</item>
+        <item>38.89954938,-77.00941858</item>
         <item>40.74997906,-73.98001693</item>
         <item>17.75037518,-64.749986</item>
         <item>-34.47999901,-57.84000247</item>

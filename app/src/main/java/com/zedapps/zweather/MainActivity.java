@@ -1,6 +1,7 @@
 package com.zedapps.zweather;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,12 +16,15 @@ import android.widget.Toast;
 
 import com.zedapps.zweather.model.WeatherData;
 import com.zedapps.zweather.service.WeatherDataFetcher;
+import com.zedapps.zweather.util.IconUtils;
 import com.zedapps.zweather.util.NetworkUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static android.R.layout.simple_dropdown_item_1line;
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         populateLists();
         initializeCityList();
 
-        if (!NetworkUtils.isConnectedToInternet(getApplicationContext())) {
+        if (NetworkUtils.isNetworkNotConnected(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), err_msg_no_internet, LENGTH_LONG).show();
         }
 
@@ -111,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void handleSearchAction() {
-        if (!NetworkUtils.isConnectedToInternet(getApplicationContext())) {
+        if (NetworkUtils.isNetworkNotConnected(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), err_msg_no_internet, LENGTH_LONG).show();
             return;
         }
@@ -127,48 +131,59 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 WeatherData weatherData = weatherFetcher.get();
-                txtCityLabel.setText(cityCountryCombo);
-                imgWeatherIcon.setBackgroundResource(getIconDrawableCode(weatherData.getWeatherCode()));
-
-                txtCurrentTemperature.setText(weatherData.getCurrentTemperature());
-                txtWeatherDesc.setText(WordUtils.capitalize(weatherData.getWeatherDescription()));
-
-                txtMinTemperature.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.mintemp),
-                        null, null, null);
-                txtMinTemperature.setText(weatherData.getMinTemperature());
-
-                txtMaxTemperature.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.maxtemp),
-                        null, null, null);
-                txtMaxTemperature.setText(weatherData.getMaxTemperature());
-
-                txtHumidity.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.humidity),
-                        null, null, null);
-                txtHumidity.setText(weatherData.getHumidity());
-
-                txtWindSpeed.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.windspeed),
-                        null, null, null);
-                txtWindSpeed.setText(weatherData.getWindSpeed());
-
-                txtWindDeg.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.winddeg),
-                        null, null, null);
-                txtWindDeg.setText(weatherData.getWindDeg());
-
-                txtSunrise.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.sunrise),
-                        null, null, null);
-                txtSunrise.setText(DateFormat.format(TIME_FORMAT_12H, weatherData.getSunriseTime()));
-
-                txtSunset.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.sunset),
-                        null, null, null);
-                txtSunset.setText(DateFormat.format(TIME_FORMAT_12H, weatherData.getSunsetTime()));
-
-                txtUpdatedStamp.setText("Last Update Time: " +
-                        DateFormat.format(TIMESTAMP_FORMAT, weatherData.getLastUpdatedTime()));
+                formatViewableWeatherData(cityCountryCombo, weatherData);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         } else {
             txtCityLabel.setText(R.string.err_msg_invalid_city);
         }
+    }
+
+    private void formatViewableWeatherData(String cityCountryCombo, WeatherData weatherData) {
+        txtCityLabel.setText(cityCountryCombo);
+        imgWeatherIcon.setBackgroundResource(getIconDrawableCode(weatherData.getWeatherCode()));
+
+        Map<String, Drawable> drawableMap = IconUtils.getDrawableMap(getApplicationContext());
+
+        txtCurrentTemperature.setText(weatherData.getCurrentTemperature());
+        txtWeatherDesc.setText(WordUtils.capitalize(weatherData.getWeatherDescription()));
+
+        txtMinTemperature.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("mintemp"),
+                null, null, null);
+        txtMinTemperature.setText(weatherData.getMinTemperature());
+
+        txtMaxTemperature.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("maxTemp"),
+                null, null, null);
+        txtMaxTemperature.setText(weatherData.getMaxTemperature());
+
+        txtHumidity.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("humidity"),
+                null, null, null);
+        txtHumidity.setText(weatherData.getHumidity());
+
+        if (StringUtils.isNotEmpty(weatherData.getWindSpeed())) {
+            txtWindSpeed.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("windspeed"),
+                    null, null, null);
+            txtWindSpeed.setText(weatherData.getWindSpeed());
+        }
+
+        if (StringUtils.isNotEmpty(weatherData.getWindDeg())) {
+            txtWindDeg.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("winddeg"),
+                    null, null, null);
+            txtWindDeg.setText(weatherData.getWindDeg());
+        }
+
+        txtSunrise.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("sunrise"),
+                null, null, null);
+        txtSunrise.setText(DateFormat.format(TIME_FORMAT_12H, weatherData.getSunriseTime()));
+
+        txtSunset.setCompoundDrawablesWithIntrinsicBounds(drawableMap.get("sunset"),
+                null, null, null);
+        txtSunset.setText(DateFormat.format(TIME_FORMAT_12H, weatherData.getSunsetTime()));
+
+        String lastUpdatedString = getString(R.string.lbl_last_updated) +
+                DateFormat.format(TIMESTAMP_FORMAT, weatherData.getLastUpdatedTime());
+        txtUpdatedStamp.setText(lastUpdatedString);
     }
 
     private void populateLists() {
