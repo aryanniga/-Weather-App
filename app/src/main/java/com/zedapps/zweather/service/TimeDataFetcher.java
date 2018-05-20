@@ -5,16 +5,11 @@ import android.os.AsyncTask;
 
 import com.zedapps.zweather.R;
 import com.zedapps.zweather.model.TimeData;
-import com.zedapps.zweather.model.WeatherData;
 import com.zedapps.zweather.util.NetworkUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**

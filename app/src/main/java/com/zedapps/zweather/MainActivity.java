@@ -24,9 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -204,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 null, null, null);
         txtSunset.setText(timeFormat.format(weatherData.getSunsetTime()));
 
-        String lastUpdatedString = getString(R.string.lbl_last_updated) +
+        String lastUpdatedString = getString(R.string.lbl_last_updated) + " " +
                 timeStampFormat.format(weatherData.getLastUpdatedTime());
         txtUpdatedStamp.setText(lastUpdatedString);
     }
