@@ -8,7 +8,7 @@
 
     <string name="lbl.about">Powered by ZedApps. Icons created by Laura Reen @ IconFinder.com</string>
     <string name="img.weather.hint">Weather icon goes here</string>
-    <string name="lbl_last_updated">Last Update Time: </string>
-    <string name="lbl_no_wind_deg">No wind degree data found</string>
-    <string name="lbl_no_wind_speed">No wind speed data found</string>
+    <string name="lbl.last.updated">Last Update Time: </string>
+    <string name="lbl.no.wind.deg">No wind degree data found</string>
+    <string name="lbl.no.wind.speed">No wind speed data found</string>
 </resources>

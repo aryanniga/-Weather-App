@@ -3,6 +3,7 @@ package com.zedapps.zweather.util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +21,11 @@ import static android.net.ConnectivityManager.TYPE_WIFI;
  */
 public class NetworkUtils {
 
+    private static final String logTag = "networkUtil";
+
     public static boolean isNetworkNotConnected(Context appContext) {
+        Log.d(logTag, "starting checking for connectivity");
+
         ConnectivityManager connManager = (ConnectivityManager)
                 appContext.getSystemService(CONNECTIVITY_SERVICE);
 
@@ -32,6 +37,8 @@ public class NetworkUtils {
     }
 
     public static String obtainResponseString(URL requestUrl) throws IOException {
+        Log.d(logTag, "retrieving JSON data from: " + requestUrl);
+
         HttpURLConnection httpConnection = (HttpURLConnection) requestUrl.openConnection();
         httpConnection.setRequestMethod("GET");
 
@@ -44,6 +51,8 @@ public class NetworkUtils {
         while ((buffer = responseReader.readLine()) != null) {
             responseBuilder.append(buffer).append("\n");
         }
+
+        Log.d(logTag, "successfully retrieved JSON data from provider");
 
         return responseBuilder.toString();
     }

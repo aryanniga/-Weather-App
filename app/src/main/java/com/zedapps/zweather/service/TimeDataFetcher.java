@@ -2,6 +2,7 @@ package com.zedapps.zweather.service;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.zedapps.zweather.R;
 import com.zedapps.zweather.model.TimeData;
@@ -18,11 +19,15 @@ import java.net.URL;
  */
 public class TimeDataFetcher extends AsyncTask<Object, JSONObject, TimeData> {
 
+    private static final String logTag = "timeDataFetcher";
+
     private static final String TIME_REQUEST_URL = "http://api.timezonedb.com/v2/get-time-zone?" +
             "key={APIKEY}&by=position&format=json&lat={LAT}&lng={LON}";
 
     @Override
     protected TimeData doInBackground(Object[] objects) {
+        Log.d(logTag, "starting fetcher exec");
+
         Context context = (Context) objects[0];
         String lat = (String) objects[1];
         String lon = (String) objects[2];

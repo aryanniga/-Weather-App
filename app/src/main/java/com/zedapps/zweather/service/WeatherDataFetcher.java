@@ -2,6 +2,7 @@ package com.zedapps.zweather.service;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.zedapps.zweather.R;
 import com.zedapps.zweather.model.WeatherData;
@@ -18,11 +19,15 @@ import java.net.URL;
  */
 public class WeatherDataFetcher extends AsyncTask<Object, JSONObject, WeatherData> {
 
+    private static final String logTag = "weatherDataFetcher";
+
     private static final String WEATHER_REQUEST_URL = "http://api.openweathermap.org/data" +
             "/2.5/weather?lat={LAT}&lon={LON}&APPID={APIKEY}&units=metric";
 
     @Override
     protected WeatherData doInBackground(Object[] objects) {
+        Log.d(logTag, "starting fetcher exec");
+
         Context context = (Context) objects[0];
         String lat = (String) objects[1];
         String lon = (String) objects[2];
