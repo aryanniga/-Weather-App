@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
@@ -46,13 +47,11 @@ import static java.util.Collections.unmodifiableList;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final String logTag = "mainActivity";
-
     public static final String TIME_FORMAT_12H = "hh:mm a";
     public static final String TIMESTAMP_FORMAT = "dd/MM/yyyy hh:mm:ss a";
 
-    public static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT_12H);
-    public static final SimpleDateFormat timeStampFormat = new SimpleDateFormat(TIMESTAMP_FORMAT);
+    public static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT_12H, Locale.US);
+    public static final SimpleDateFormat timeStampFormat = new SimpleDateFormat(TIMESTAMP_FORMAT, Locale.US);
 
     private static List<String> countryList;
     private static List<String> coordinateList;
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(logTag, "initializing application");
+        Log.d(this.getClass().getName(), "initializing application");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -103,15 +102,15 @@ public class MainActivity extends AppCompatActivity {
         txtUpdatedStamp = findViewById(R.id.txtUpdatedTime);
         imgWeatherIcon = findViewById(R.id.imgWeatherIcon);
 
-        Log.d(logTag, "retrieving data from resources");
+        Log.d(this.getClass().getName(), "retrieving data from resources");
 
         populateLists();
         initializeCityList();
 
-        Log.d(logTag, "data retrieval complete");
+        Log.d(this.getClass().getName(), "data retrieval complete");
 
         if (NetworkUtils.isNetworkNotConnected(getApplicationContext())) {
-            Log.d(logTag, "no connectivity found");
+            Log.d(this.getClass().getName(), "no connectivity found");
             Toast.makeText(getApplicationContext(), err_msg_no_internet, LENGTH_LONG).show();
         }
 
@@ -132,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void handleSearchAction() {
-        Log.d(logTag, "starting data fetching action");
+        Log.d(this.getClass().getName(), "starting data fetching action");
 
         if (NetworkUtils.isNetworkNotConnected(getApplicationContext())) {
-            Log.d(logTag, "no connectivity found");
+            Log.d(this.getClass().getName(), "no connectivity found");
             Toast.makeText(getApplicationContext(), err_msg_no_internet, LENGTH_LONG).show();
 
             return;
@@ -154,19 +153,19 @@ public class MainActivity extends AppCompatActivity {
             timeFetcher.execute(MainActivity.this, coordinatesComps[0], coordinatesComps[1]);
 
             try {
-                Log.d(logTag, "processing fetched data");
+                Log.d(this.getClass().getName(), "processing fetched data");
 
                 WeatherData weatherData = weatherFetcher.get();
                 TimeData timeData = timeFetcher.get();
 
                 formatViewableWeatherData(cityCountryCombo, weatherData, timeData);
 
-                Log.d(logTag, "processing data successful");
+                Log.d(this.getClass().getName(), "processing data successful");
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         } else {
-            Log.d(logTag, "invalid city param");
+            Log.d(this.getClass().getName(), "invalid city param");
 
             txtCityLabel.setText(R.string.err_msg_invalid_city);
         }

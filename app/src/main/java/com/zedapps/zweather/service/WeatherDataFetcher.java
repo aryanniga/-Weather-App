@@ -19,14 +19,12 @@ import java.net.URL;
  */
 public class WeatherDataFetcher extends AsyncTask<Object, JSONObject, WeatherData> {
 
-    private static final String logTag = "weatherDataFetcher";
-
     private static final String WEATHER_REQUEST_URL = "http://api.openweathermap.org/data" +
             "/2.5/weather?lat={LAT}&lon={LON}&APPID={APIKEY}&units=metric";
 
     @Override
     protected WeatherData doInBackground(Object[] objects) {
-        Log.d(logTag, "starting fetcher exec");
+        Log.d(this.getClass().getName(), "starting fetcher exec");
 
         Context context = (Context) objects[0];
         String lat = (String) objects[1];

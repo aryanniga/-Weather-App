@@ -21,13 +21,13 @@ import static android.net.ConnectivityManager.TYPE_WIFI;
  */
 public class NetworkUtils {
 
-    private static final String logTag = "networkUtil";
-
     public static boolean isNetworkNotConnected(Context appContext) {
-        Log.d(logTag, "starting checking for connectivity");
+        Log.d(NetworkUtils.class.getName(), "starting checking for connectivity");
 
         ConnectivityManager connManager = (ConnectivityManager)
                 appContext.getSystemService(CONNECTIVITY_SERVICE);
+
+        assert connManager != null;
 
         NetworkInfo mobileNetInfo = connManager.getNetworkInfo(TYPE_MOBILE);
         NetworkInfo wifiNetInfo = connManager.getNetworkInfo(TYPE_WIFI);
@@ -37,7 +37,7 @@ public class NetworkUtils {
     }
 
     public static String obtainResponseString(URL requestUrl) throws IOException {
-        Log.d(logTag, "retrieving JSON data from: " + requestUrl);
+        Log.d(NetworkUtils.class.getName(), "retrieving JSON data from: " + requestUrl);
 
         HttpURLConnection httpConnection = (HttpURLConnection) requestUrl.openConnection();
         httpConnection.setRequestMethod("GET");
@@ -52,7 +52,7 @@ public class NetworkUtils {
             responseBuilder.append(buffer).append("\n");
         }
 
-        Log.d(logTag, "successfully retrieved JSON data from provider");
+        Log.d(NetworkUtils.class.getName(), "successfully retrieved JSON data from provider");
 
         return responseBuilder.toString();
     }

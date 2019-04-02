@@ -18,15 +18,13 @@ import java.net.URL;
  * @since 5/17/18
  */
 public class TimeDataFetcher extends AsyncTask<Object, JSONObject, TimeData> {
-
-    private static final String logTag = "timeDataFetcher";
-
+    
     private static final String TIME_REQUEST_URL = "http://api.timezonedb.com/v2/get-time-zone?" +
             "key={APIKEY}&by=position&format=json&lat={LAT}&lng={LON}";
 
     @Override
     protected TimeData doInBackground(Object[] objects) {
-        Log.d(logTag, "starting fetcher exec");
+        Log.d(this.getClass().getName(), "starting fetcher exec");
 
         Context context = (Context) objects[0];
         String lat = (String) objects[1];

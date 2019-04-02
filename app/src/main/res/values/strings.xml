@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ZWeather</string>
+    <string name="weatherApiKey">WEATHER_API_KEY_HERE</string>
+    <string name="timeApiKey">TIME_API_KEY_HERE</string>
+
     <string name="prompt.city">Select City:</string>
     <string name="prompt.city.hint">Enter City Here</string>
     <string name="err.msg.no.internet">You need to be connected to the internet in order to retrieve weather data</string>
@@ -8,7 +11,7 @@
 
     <string name="lbl.about">Powered by ZedApps. Icons created by Laura Reen @ IconFinder.com</string>
     <string name="img.weather.hint">Weather icon goes here</string>
-    <string name="lbl.last.updated">Last Update Time: </string>
+    <string name="lbl.last.updated">Last Updated: </string>
     <string name="lbl.no.wind.deg">No wind degree data found</string>
     <string name="lbl.no.wind.speed">No wind speed data found</string>
 </resources>
